@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Praktický workshop AI ako kariérny asistent pri hľadaní práce pre ľudí 50+.">
+  <title>AI ako kariérny asistent pri hľadaní práce</title>
+  <style>
+    :root {
+      --navy:#17324d; --blue:#276fbf; --teal:#2a9d8f; --sky:#eef5fb;
+      --ink:#263238; --muted:#5f6b73; --white:#fff; --line:#d9e3ea;
+      --shadow:0 12px 34px rgba(23,50,77,.10); --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:Arial,"Helvetica Neue",sans-serif;color:var(--ink);background:#f8fafc;line-height:1.65}
+    a{color:inherit}
+    .container{width:min(1120px,calc(100% - 40px));margin:auto}
+    .nav{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}
+    .nav-inner{min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .brand{font-weight:800;color:var(--navy);text-decoration:none}
+    .nav-links{display:flex;gap:20px;flex-wrap:wrap}
+    .nav-links a{text-decoration:none;color:var(--muted);font-weight:700;font-size:.92rem}
+    .nav-links a:hover{color:var(--blue)}
+    .hero{background:linear-gradient(135deg,var(--navy),#205f92 60%,var(--teal));color:#fff;padding:88px 0 78px}
+    .eyebrow{display:inline-block;padding:7px 12px;border-radius:999px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.24);font-size:.85rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+    h1{font-size:clamp(2.35rem,6vw,4.7rem);line-height:1.06;margin:22px 0 20px;max-width:900px}
+    .hero p{max-width:760px;font-size:clamp(1.05rem,2vw,1.28rem);color:#eaf3f8;margin:0 0 30px}
+    .hero-actions{display:flex;gap:14px;flex-wrap:wrap}
+    .button{display:inline-flex;align-items:center;justify-content:center;padding:13px 19px;border-radius:11px;text-decoration:none;font-weight:800;border:1px solid transparent;cursor:pointer}
+    .button-primary{background:#fff;color:var(--navy)}
+    .button-secondary{border-color:rgba(255,255,255,.58);color:#fff;background:transparent}
+    section{padding:72px 0}
+    .section-alt{background:#fff}
+    .section-heading{max-width:760px;margin:0 auto 38px;text-align:center}
+    h2{font-size:clamp(1.8rem,4vw,2.55rem);line-height:1.2;color:var(--navy);margin:0 0 12px}
+    .section-heading p,.lead{color:var(--muted);font-size:1.05rem}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:25px;box-shadow:var(--shadow)}
+    .card-number{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:var(--sky);color:var(--blue);font-weight:900;margin-bottom:15px}
+    .card h3{color:var(--navy);margin:0 0 8px;font-size:1.12rem}
+    .card p{color:var(--muted);margin:0}
+    .panel{background:var(--sky);border:1px solid #c9deed;border-radius:var(--radius);padding:34px;box-shadow:var(--shadow)}
+    .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:26px}
+    .step{background:#fff;border-radius:14px;padding:18px;border:1px solid var(--line)}
+    .step strong{display:block;color:var(--teal);font-size:1.45rem;margin-bottom:6px}
+    .audience{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:stretch}
+    .checklist{list-style:none;margin:14px 0 0;padding:0}
+    .checklist li{position:relative;padding:9px 0 9px 30px;border-bottom:1px solid var(--line)}
+    .checklist li:last-child{border-bottom:0}
+    .checklist li::before{content:'✓';position:absolute;left:0;color:var(--teal);font-weight:900}
+    .prompts-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+    .prompt-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);display:flex;flex-direction:column}
+    .prompt-card h3{margin:0 0 14px;color:var(--navy)}
+    .prompt-card pre{margin:0 0 18px;padding:18px;background:#f3f6f8;border:1px solid var(--line);border-radius:12px;white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;font-size:.92rem;line-height:1.55;flex:1}
+    .copy-btn{align-self:flex-start;background:var(--blue);color:#fff;border:0;padding:11px 15px;border-radius:9px;font-weight:800;cursor:pointer}
+    .copy-btn:hover{background:#1f5c9e}.copy-btn.copied{background:#15805f}
+    .bonus{margin-top:24px;background:linear-gradient(135deg,var(--navy),#245b85);color:#fff;border-radius:var(--radius);padding:30px}
+    .bonus h3{margin-top:0}.bonus pre{white-space:pre-wrap;font:inherit;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);padding:18px;border-radius:12px}
+    .about{display:grid;grid-template-columns:1fr 2fr;gap:28px;align-items:center}
+    .initials{width:150px;height:150px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;font-size:2.4rem;font-weight:900;margin:auto}
+    .quote{background:var(--teal);color:#fff;text-align:center;padding:54px 0}
+    .quote blockquote{font-size:clamp(1.35rem,3vw,2rem);font-weight:800;margin:0 auto;max-width:850px}
+    footer{background:#102538;color:#dbe6ee;padding:34px 0;text-align:center}
+    .note{font-size:.9rem;color:var(--muted)}
+    #toast{position:fixed;right:20px;bottom:20px;background:#123;color:#fff;padding:12px 16px;border-radius:10px;box-shadow:var(--shadow);opacity:0;transform:translateY(12px);pointer-events:none;transition:.25s}
+    #toast.show{opacity:1;transform:translateY(0)}
+    @media (max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}.steps{grid-template-columns:1fr 1fr}.prompts-grid{grid-template-columns:1fr}.about{grid-template-columns:1fr}.nav-links{display:none}}
+    @media (max-width:560px){.container{width:min(100% - 28px,1120px)}.hero{padding:64px 0}.grid,.audience,.steps{grid-template-columns:1fr}section{padding:54px 0}.panel{padding:24px}.prompt-card{padding:18px}}
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="Hlavná navigácia">
+    <div class="container nav-inner">
+      <a class="brand" href="#top">AI kariérny asistent</a>
+      <div class="nav-links">
+        <a href="#obsah">Obsah</a><a href="#postup">Ako začať</a><a href="#prompty">Prompty</a><a href="#lektorka">O lektorke</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero" id="top">
+    <div class="container">
+      <span class="eyebrow">Praktický 2-hodinový workshop pre ľudí 50+</span>
+      <h1>AI ako kariérny asistent pri hľadaní práce</h1>
+      <p>Naučte sa využívať umelú inteligenciu pri úprave CV, príprave motivačného listu a pracovnom pohovore jednoducho, bezpečne a bez technických znalostí.</p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="#obsah">Pozrieť obsah workshopu</a>
+        <a class="button button-secondary" href="#prompty">Otvoriť knižnicu promptov</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="obsah">
+      <div class="container">
+        <div class="section-heading"><h2>Čo sa na workshope naučíte</h2><p>Jeden zrozumiteľný nástroj, reálne dokumenty a konkrétne úlohy spojené s hľadaním práce.</p></div>
+        <div class="grid">
+          <article class="card"><div class="card-number">1</div><h3>Úprava CV</h3><p>Prispôsobenie životopisu konkrétnej pracovnej ponuke bez vymýšľania skúseností.</p></article>
+          <article class="card"><div class="card-number">2</div><h3>Motivačný list</h3><p>Príprava motivačného listu podľa požiadaviek a kľúčových slov z ponuky.</p></article>
+          <article class="card"><div class="card-number">3</div><h3>Pracovný pohovor</h3><p>Otázky, návrhy odpovedí a témy, na ktoré sa treba pripraviť.</p></article>
+          <article class="card"><div class="card-number">4</div><h3>Silné stránky</h3><p>Pomenovanie prenositeľných zručností, skúseností a konkurenčných výhod.</p></article>
+          <article class="card"><div class="card-number">5</div><h3>Porovnanie ponúk</h3><p>Prehľad požiadaviek, zhody s profilom, rizík a možností rozvoja.</p></article>
+          <article class="card"><div class="card-number">6</div><h3>Príprava o firme</h3><p>Zhrnutie relevantných informácií a príprava vlastných otázok na pohovor.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-alt" id="postup">
+      <div class="container">
+        <div class="panel">
+          <h2>NotebookLM v praxi</h2>
+          <p class="lead">Počas workshopu si ukážeme, ako pracovať s vlastným CV, pracovnou ponukou a informáciami o firme v jednom prehľadnom priestore.</p>
+          <div class="steps">
+            <div class="step"><strong>1</strong>Nahrajte svoje CV.</div>
+            <div class="step"><strong>2</strong>Pridajte pracovnú ponuku.</div>
+            <div class="step"><strong>3</strong>Vyberte si prompt.</div>
+            <div class="step"><strong>4</strong>Vložte ho do NotebookLM.</div>
+            <div class="step"><strong>5</strong>Výsledok skontrolujte a upravte.</div>
+          </div>
+          <p class="note"><strong>Dôležité:</strong> AI je pomocník. Nechajte ju pracovať iba s pravdivými podkladmi a každý výsledok pred použitím skontrolujte.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container audience">
+        <div class="card"><h2>Pre koho je workshop</h2><ul class="checklist"><li>Pre ľudí 50+</li><li>Pre uchádzačov o zamestnanie</li><li>Pre ľudí uvažujúcich o zmene práce</li><li>Pre záujemcov o praktické využitie AI</li></ul></div>
+        <div class="card"><h2>Čo si odnesiete</h2><ul class="checklist"><li>Jednoduchý postup práce s NotebookLM</li><li>Knižnicu praktických promptov</li><li>Postup úpravy CV a motivačného listu</li><li>Spôsob prípravy na pohovor pomocou AI</li></ul><p><strong>Nie sú potrebné technické znalosti.</strong></p></div>
+      </div>
+    </section>
+
+    <section class="section-alt" id="prompty">
+      <div class="container">
+        <div class="section-heading"><h2>Knižnica promptov</h2><p>Nahrajte relevantné dokumenty, vyberte prompt a kliknite na tlačidlo Skopírovať prompt.</p></div>
+        <div class="prompts-grid" id="promptGrid"></div>
+        <div class="bonus">
+          <h3>Bonusový prompt: kompletná príprava</h3>
+          <pre id="bonusPrompt">Na základe môjho CV a tejto pracovnej ponuky mi priprav kompletný plán prípravy na pohovor vrátane najpravdepodobnejších otázok, návrhov odpovedí, otázok na zamestnávateľa a oblastí, ktoré si mám ešte naštudovať. Používaj iba informácie z nahraných zdrojov a nič nevymýšľaj.</pre>
+          <button class="copy-btn" data-target="bonusPrompt">Skopírovať prompt</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="lektorka">
+      <div class="container about">
+        <div class="initials" aria-hidden="true">JS</div>
+        <div><h2>O lektorke</h2><h3>Jana Stadtruckerová</h3><p>Projektová manažérka s viac ako 15 rokmi skúseností v projektovom riadení, business analýze a digitálnej transformácii.</p><p>Venuje sa praktickému využívaniu umelej inteligencie, AI adopcii a navrhovaniu riešení, ktoré pomáhajú ľuďom efektívnejšie pracovať a rozvíjať svoju kariéru.</p></div>
+      </div>
+    </section>
+
+    <section class="quote"><div class="container"><blockquote>„AI nenahrádza človeka. Pomáha mu lepšie využiť jeho skúsenosti.“</blockquote></div></section>
+  </main>
+
+  <footer><div class="container"><strong>AI ako kariérny asistent pri hľadaní práce</strong><br>Praktický workshop pre ľudí 50+</div></footer>
+  <div id="toast" role="status" aria-live="polite">Prompt bol skopírovaný.</div>
+
+  <script>
+    const prompts = [
+      ['Analýza pracovnej ponuky', `Analyzuj túto pracovnú ponuku.\n\nIdentifikuj:\n- hlavné požiadavky\n- požadované zručnosti\n- kľúčové slová\n- najdôležitejšie skúsenosti kandidáta\n\nVytvor stručné zhrnutie v bodoch.`],
+      ['Porovnanie CV s ponukou', `Porovnaj moje CV s pracovnou ponukou.\n\nIdentifikuj:\n- oblasti silnej zhody\n- možné medzery\n- skúsenosti, ktoré by som mal alebo mala zdôrazniť\n\nNevymýšľaj žiadne nové skúsenosti.`],
+      ['Návrh úpravy CV', `Na základe pracovnej ponuky navrhni úpravy môjho CV.\n\nOdporuč:\n- ktoré skúsenosti zdôrazniť\n- ktoré zručnosti presunúť vyššie\n- ktoré formulácie zlepšiť\n\nNevytváraj informácie, ktoré nie sú uvedené v CV.`],
+      ['Motivačný list podľa kľúčových slov', `Z pracovnej ponuky identifikuj najdôležitejšie požiadavky a kľúčové slová.\n\nNa základe môjho CV priprav motivačný list. Používaj iba informácie uvedené v mojom CV. Zdôrazni skúsenosti a zručnosti, ktoré najlepšie zodpovedajú požiadavkám pozície. Nič nevymýšľaj.`],
+      ['Silné stránky kandidáta', `Na základe môjho CV identifikuj:\n\n- moje silné stránky\n- prenositeľné zručnosti\n- konkurenčné výhody\n- skúsenosti, ktoré ma odlišujú\n\nVýsledok priprav v prehľadných bodoch a pri každom bode uveď, z ktorej časti CV vychádza.`],
+      ['Príprava na pracovný pohovor', `Na základe môjho CV a pracovnej ponuky priprav:\n\n- 10 najpravdepodobnejších otázok\n- návrhy odpovedí založené na mojom CV\n- oblasti, ktoré si mám naštudovať\n\nPouži štýl reálneho pracovného pohovoru a nič nevymýšľaj.`],
+      ['Otázky na zamestnávateľa', `Na základe pracovnej ponuky priprav 10 otázok, ktoré môžem položiť počas pohovoru.\n\nRozdeľ ich na:\n- pracovná pozícia\n- tím\n- spôsob práce\n- vzdelávanie a rozvoj\n- očakávania od kandidáta`],
+      ['Príprava o firme', `Z nahraných zdrojov zhrň najdôležitejšie informácie o firme.\n\nVysvetli:\n- čomu sa firma venuje\n- aké má produkty alebo služby\n- aké témy sú dôležité pre túto pozíciu\n- čo by mal kandidát vedieť pred pohovorom\n\nPoužívaj iba informácie z dostupných zdrojov.`],
+      ['Porovnanie dvoch pracovných ponúk', `Porovnaj tieto dve pracovné ponuky.\n\nVyhodnoť:\n- hlavné požiadavky\n- zhodu s mojím profilom\n- možné medzery a riziká\n- príležitosti na rozvoj\n- otázky, ktoré si mám overiť\n\nVýsledok zobraz v prehľadnej tabuľke.`],
+      ['Môj kariérny kouč', `Správaj sa ako kariérny poradca.\n\nNa základe môjho CV navrhni:\n- vhodné pracovné pozície\n- moje využiteľné skúsenosti\n- oblasti rozvoja\n- zručnosti, ktoré by som mal alebo mala doplniť\n- konkrétne ďalšie kroky\n\nBuď praktický, konkrétny a vychádzaj iba z môjho CV.`],
+      ['Profesionálne zhrnutie', `Na základe môjho CV vytvor stručné profesionálne zhrnutie.\n\nOdpovedz:\n- kto som\n- aké sú moje hlavné skúsenosti\n- aké problémy viem riešiť\n- akú hodnotu prinášam zamestnávateľovi\n\nVýsledok priprav v rozsahu 5 až 8 viet a nič nevymýšľaj.`],
+      ['Vhodné pracovné pozície', `Na základe môjho CV navrhni pracovné pozície, na ktoré sa hodím.\n\nPri každej pozícii vysvetli:\n- prečo je vhodná\n- ktoré moje skúsenosti ju podporujú\n- čo by som si mal alebo mala ešte doplniť\n\nZoraď návrhy od najlepšej zhody.`]
+    ];
+
+    const grid = document.getElementById('promptGrid');
+    prompts.forEach((item, index) => {
+      const article = document.createElement('article');
+      article.className = 'prompt-card';
+      const title = document.createElement('h3');
+      title.textContent = item[0];
+      const pre = document.createElement('pre');
+      pre.id = `prompt-${index + 1}`;
+      pre.textContent = item[1];
+      const button = document.createElement('button');
+      button.className = 'copy-btn';
+      button.dataset.target = pre.id;
+      button.textContent = 'Skopírovať prompt';
+      article.append(title, pre, button);
+      grid.appendChild(article);
+    });
+
+    const toast = document.getElementById('toast');
+    async function copyPrompt(id, button) {
+      const text = document.getElementById(id).innerText;
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch (error) {
+        const area = document.createElement('textarea');
+        area.value = text; document.body.appendChild(area); area.select();
+        document.execCommand('copy'); area.remove();
+      }
+      const original = button.textContent;
+      button.textContent = 'Skopírované'; button.classList.add('copied');
+      toast.classList.add('show');
+      setTimeout(() => { button.textContent = original; button.classList.remove('copied'); toast.classList.remove('show'); }, 1800);
+    }
+    document.addEventListener('click', event => {
+      const button = event.target.closest('.copy-btn');
+      if (button) copyPrompt(button.dataset.target, button);
+    });
+  </script>
+</body>
+</html>
